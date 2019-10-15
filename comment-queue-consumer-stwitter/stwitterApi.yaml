@@ -1,0 +1,300 @@
+openapi: 3.0.0
+info:
+  title: Stwtitter Service
+  description:
+    A social media service that features a chirping birdie.
+  version: 0.0.1
+servers:
+  - url: 'http://localhost:1999'
+    description: Config server
+  - url: 'http://localhost: 8761'
+    description: Eureka server
+  - url: 'http://localhost:1777'
+    description: Post service
+  - url: 'http://localhost: 6868'
+    description: Comment service
+  - url: 'http://localhost:8889'
+    description: Stwitter server
+
+paths:
+  /posts:  
+    get:
+      summary: Retrieves all post entries.
+      responses:
+        '200':
+          description: Post view model object(s)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PostViewModel'
+    post:
+      summary: Creates a new post with the given information.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostViewModel'
+      responses:
+        '201':
+          description: A post view model object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostViewModel'
+        '400':
+          description: Invalid request syntax.
+        '422':
+          description: Incomplete post information. Some required fields missing. 
+                 
+  /posts/{postId}:
+    get:
+      summary: Retrieves the entry for the post matching the given ID.
+      parameters: 
+        - name: postId
+          in: path
+          required: true
+          description: ID of the post you would like to retrieve.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Post object matching given ID.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostViewModel'
+    put:
+      summary: Updates the entry for the post with the given ID.
+      parameters: 
+        - name: postId
+          in: path
+          required: true
+          description: ID of the post you would like to retrieve.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostViewModel'
+      responses:
+        '200':
+          description: Post successfully updated.
+        '422':
+          description: Post ID on path must match the ID in the post object. 
+    delete:
+      summary: Deletes the entry for the post with the given ID.
+      parameters: 
+        - name: postId
+          in: path
+          required: true
+          description: ID of the post you would like to delete.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Post successfully deleted.
+          
+  /posts/user/{posterName}:
+    get:
+      summary: Retrieves post entries with matching name. 
+      parameters: 
+        - name: posterName
+          in: path
+          required: true
+          description: Poster name of the post(s) you would like to retrieve.
+          schema:
+            type: string
+            minimum: 1
+            maximum: 1
+      responses:
+        '200':
+          description: Post view model object(s)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PostViewModel'
+  
+  /comments:  
+    get:
+      summary: Retrieves all comment entries.
+      responses:
+        '200':
+          description: Comment view model object(s)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CommentViewModel'
+    post:
+      summary: Creates a new comment with the given information.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentViewModel'
+      responses:
+        '201':
+          description: A comment view model object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommentViewModel'
+        '400':
+          description: Invalid request syntax.
+        '422':
+          description: Incomplete post information. Some required fields missing. 
+                 
+  /comments/{commentId}:
+    get:
+      summary: Retrieves the entry for the comment matching the given ID.
+      parameters: 
+        - name: commentId
+          in: path
+          required: true
+          description: ID of the comment you would like to retrieve.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Comment object matching given ID.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommentViewModel'
+    put:
+      summary: Updates the entry for the comment with the given ID.
+      parameters: 
+        - name: commentId
+          in: path
+          required: true
+          description: ID of the comment you would like to retrieve.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentViewModel'
+      responses:
+        '200':
+          description: Comment successfully updated.
+        '422':
+          description: Comment ID on path must match the ID in the comment object. 
+    delete:
+      summary: Deletes the entry for the comment with the given ID.
+      parameters: 
+        - name: commentId
+          in: path
+          required: true
+          description: ID of the comment you would like to delete.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Comment successfully deleted.
+          
+  /comments/name/{commenterName}:
+    get:
+      summary: Retrieves comment entries with matching name. 
+      parameters: 
+        - name: commenterName
+          in: path
+          required: true
+          description: Commenter name of the comment(s) you would like to retrieve.
+          schema:
+            type: string
+            minimum: 1
+            maximum: 1
+      responses:
+        '200':
+          description: Comment view model object(s)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CommentViewModel'
+                  
+  /comments/post/{postId}:
+    get:
+      summary: Retrieves comment entries with matching post id. 
+      parameters: 
+        - name: postId
+          in: path
+          required: true
+          description: Post id of the comment(s) you would like to retrieve.
+          schema:
+            type: string
+            minimum: 1
+            maximum: 1
+      responses:
+        '200':
+          description: Comment view model object(s)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CommentViewModel'
+  
+components:
+  schemas:
+    PostViewModel:
+      type: object
+      properties:
+        postId:
+          type: integer
+        post:
+          type: string
+        postDate:
+          type: string
+        posterName:
+          type: string
+        comments:
+          type: array
+          items:
+            type: object
+      required: 
+        - post
+        - postDate
+        - posterName
+    CommentViewModel:
+      type: object
+      properties:
+        commentId:
+          type: integer
+        postId:
+          type: integer
+        createDate:
+          type: string
+        commenterName:
+          type: string
+        comment:
+          type: string
+      required: 
+        - postId
+        - createDate
+        - commenterName
+        - comment
