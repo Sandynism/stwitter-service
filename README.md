@@ -6,8 +6,12 @@
 * Java
 * Spring Boot
 * MySQL
+* Config Server
 * Eureka Server
 * RabbitMQ
 * Feign
 * Mockito
+* Caching
+* Swagger
+
 
