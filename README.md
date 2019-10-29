@@ -1,4 +1,4 @@
-# stwitter-service
+### Stwitter Service
 
 ## Description
 A RESTful API based off Twitter built with a microservice architecture.
