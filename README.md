@@ -1,8 +1,10 @@
 # stwitter-service
 
+A RESTful API based off Twitter built with a microservice architecture.
+
 ![](screenshots/stwitter-system.png)
 
-### Built with:
+## Technologies Used:
 * Java
 * Spring Boot
 * MySQL
@@ -14,4 +16,6 @@
 * Caching
 * Swagger
 
+## Built With:
+* Intellij Idea
 
